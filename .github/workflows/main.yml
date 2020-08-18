@@ -23,6 +23,6 @@ jobs:
     steps:    
       - name: CURL
         env:
-          TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          TOKEN: ${{ secrets.TOKEN }}
         run: |
-          curl https://api.sockboom.cc/client/checkin?token="$ACCESS_TOKEN"
+          curl https://api.sockboom.cc/client/checkin?token="$TOKEN"
