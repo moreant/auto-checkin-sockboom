@@ -1,28 +1,41 @@
-# This is a basic workflow to help you get started with Actions
+name: 'Auto chick in sockboom'
 
-name: 'sockboom checkin'
-
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
-on:
+on: 
+  release:
+    types: [published]
+  push:
+    tags:
+    - 'v*'
+  schedule:
+    - cron: '0 17 * * *' # UTC+8小时=北京时间 17代表凌晨一点
   watch:
     types: [started]
-  push:
-    branches: [ master ]
-  schedule:
-    - cron: '0 17 * * *'
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+   
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:    
-      - name: CURL
-        env:
-          TOKEN: ${{ secrets.TOKEN }}
-        run: |
-          curl https://api.sockboom.cc/client/checkin?token="$TOKEN"
+    if: github.event.repository.owner.id == github.event.sender.id  # 自己点的 start
+    steps:
+    - name: Get log
+      uses: actions/checkout@master
+    - name: Chick in Api #Api调用
+      env:
+        SESSION: ${{ secrets.SESSION }}
+      run: | 
+        echo -n `date +%Y-%m-%d\ %H:%M:%S`\ -\ >> ./run.log 
+        curl curl https://api.sockboom.cc/client/checkin?token="$TOKEN" >> ./run.log
+        echo >> ./run.log
+        tail run.log #避免日志上传失败丢失日志
+    - name: Commit #上传日志到仓库，可以自行修改 name 和 email
+      env:
+       NAME: moreant
+       EMAIL: moreant@foxmail.com
+      run: |
+        git config --global user.email "$EMAIL"
+        git config --global user.name "$NAME"
+        git add .
+        git commit -m "update log" -a
+    - name: Push log
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
