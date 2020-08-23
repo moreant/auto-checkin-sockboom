@@ -1,4 +1,2 @@
-# sockboomCheckin
-每日签到sockboom
-
-fork这个仓库，然后在 Setting->Secrets->New secret 新建一个 TOKEN ，填入你的 TOKEN 然后给fork的仓库点个赞即可
+# 食用说明请看镜像仓库
+[auto-chickIn-biliob](https://github.com/moreant/auto-chickIn-biliob)
