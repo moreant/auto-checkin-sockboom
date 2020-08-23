@@ -1,4 +1,4 @@
-name: 'Auto chick in sockboom'
+name: 'Auto check in sockboom'
 
 on: 
   release:
@@ -12,7 +12,7 @@ on:
     types: [started]
    
 jobs:
-  chicking:
+  checking:
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id  # 自己点的 start
     steps:
