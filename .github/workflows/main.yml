@@ -16,11 +16,15 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id  # 自己点的 start
     steps:
+    - name: Setup timezone
+      uses: zcong1993/setup-timezone@master
+      with:
+        timezone: Asia/Shanghai          
     - name: Get log
       uses: actions/checkout@master
     - name: Chick in Api #Api调用
       env:
-        SESSION: ${{ secrets.TOKEN }}
+        TOKEN: ${{ secrets.TOKEN }}
       run: | 
         echo -n `date +%Y-%m-%d\ %H:%M:%S`\ -\ >> ./run.log 
         curl curl https://api.sockboom.cc/client/checkin?token="$TOKEN" >> ./run.log
