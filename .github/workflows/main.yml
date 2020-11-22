@@ -24,6 +24,7 @@ jobs:
       uses: actions/checkout@master
     - name: Chick in Api #Api调用
       env:
+        TIM_TOKEN: ${{ secrets.TIM_TOKEN }}
         TOKEN: ${{ secrets.TOKEN }}
       run: | 
         echo -n `date +%Y-%m-%d\ %H:%M:%S`\ -\ >> ./run.log 
