@@ -27,6 +27,7 @@ jobs:
         TOKEN: ${{ secrets.TOKEN }}
       run: | 
         echo -n `date +%Y-%m-%d\ %H:%M:%S`\ -\ >> ./run.log 
+        curl curl https://api.sockboom.cc/client/checkin?token="$TIM_TOKEN" >> ./run.log
         curl curl https://api.sockboom.cc/client/checkin?token="$TOKEN" >> ./run.log
         echo >> ./run.log
         tail run.log #避免日志上传失败丢失日志
