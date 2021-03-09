@@ -27,7 +27,7 @@ jobs:
         EMAIL: ${{ secrets.EMAIL }}
         PASSWORD: ${{ secrets.PASSWORD }}
       run: | 
-        echo -en $(curl -c cookie.txt -X POST 'https://sockboom.lol/auth/login' -d 'email="$EMAIL"' -d 'passwd="$PASSWORD"')
+        echo -en $(curl -c cookie.txt -X POST 'https://sockboom.lol/auth/login' -d email="$EMAIL" -d passwd="$PASSWORD")
     - name: Chick in Api #签到
       run: | 
         echo -n `date +%Y-%m-%d\ %H:%M:%S`\ -\ >> ./run.log 
