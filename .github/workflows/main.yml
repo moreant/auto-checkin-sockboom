@@ -33,7 +33,8 @@ jobs:
       run: | 
         echo `date +%Y-%m-%d\ %H:%M:%S`\ -\ >> ./run.log 
         RES=$(echo -e $(curl -b cookie.txt -X POST 'https://sockboom.lol/user/checkin'))
-        echo $RES > ./run.log
+        echo $RES >> ./run.log
+        echo -n
         curl https://api.day.app/$BARK/$RES
         tail run.log #避免日志上传失败丢失日志
     - name: Commit #上传日志到仓库，可以自行修改 name 和 email
@@ -44,7 +45,7 @@ jobs:
         git config --global user.name "$NAME"
         git config --global user.email "$EMAIL"
         ls
-        git statue
+        git status
         git add run.log
         git commit -m $RES -a
     - name: Push log
