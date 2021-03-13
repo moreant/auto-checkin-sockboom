@@ -26,14 +26,15 @@ jobs:
       env:
         EMAIL: ${{ secrets.EMAIL }}
         PASSWORD: ${{ secrets.PASSWORD }}
+        BARK: ${{ secrets.BARK }}
       run: | 
         echo -en $(curl -c cookie.txt -X POST 'https://sockboom.lol/auth/login' -d email="$EMAIL" -d passwd="$PASSWORD")
     - name: Chick in Api #签到
       run: | 
         echo `date +%Y-%m-%d\ %H:%M:%S`\ -\ >> ./run.log 
         RES=$(echo -e $(curl -b cookie.txt -X POST 'https://sockboom.lol/user/checkin'))
-        echo $RES > run.log
-        curl https://api.day.app/H8ayZbH8tjpwARGR6t7L2A/$RES
+        echo $RES > ./run.log
+        curl https://api.day.app/$BARK/$RES
         tail run.log #避免日志上传失败丢失日志
     - name: Commit #上传日志到仓库，可以自行修改 name 和 email
       env:
@@ -42,8 +43,10 @@ jobs:
       run: |
         git config --global user.name "$NAME"
         git config --global user.email "$EMAIL"
+        ls
+        git statue
         git add run.log
-        git commit -m "update log" -a
+        git commit -m $RES -a
     - name: Push log
       uses: ad-m/github-push-action@master
       with:
