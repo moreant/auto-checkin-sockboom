@@ -22,26 +22,28 @@ jobs:
         timezone: Asia/Shanghai          
     - name: Get log
       uses: actions/checkout@master
-    - name: Chick in Api #Api调用
+    - name: login in APi #登录获取cookie
       env:
-        TIM_TOKEN: ${{ secrets.TIM_TOKEN }}
-        TOKEN: ${{ secrets.TOKEN }}
+        EMAIL: ${{ secrets.EMAIL }}
+        PASSWORD: ${{ secrets.PASSWORD }}
+      run: | 
+        echo -en $(curl -c cookie.txt -X POST 'https://sockboom.lol/auth/login' -d email="$EMAIL" -d passwd="$PASSWORD")
+    - name: Chick in Api #签到
       run: | 
         echo -n `date +%Y-%m-%d\ %H:%M:%S`\ -\ >> ./run.log 
-        curl curl https://api.sockboom.cc/client/checkin?token="$TIM_TOKEN" >> ./run.log
-        curl curl https://api.sockboom.cc/client/checkin?token="$TOKEN" >> ./run.log
+        echo -en $(curl -b cookie.txt -X POST 'https://sockboom.lol/user/checkin')  >> run.log
         echo >> ./run.log
         tail run.log #避免日志上传失败丢失日志
     - name: Commit #上传日志到仓库，可以自行修改 name 和 email
       env:
-       NAME: moreant
-       EMAIL: moreant@foxmail.com
+       NAME: merrycodes
+       EMAIL: merrycodes@163.com
       run: |
-        git config --global user.email "actionbot@bot.com"
-        git config --global user.name "actionbot"
+        git config --global user.name "$NAME"
+        git config --global user.email "$EMAIL"
         git add .
         git commit -m "update log" -a
     - name: Push log
       uses: ad-m/github-push-action@master
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.TOKEN }}
