@@ -6,8 +6,8 @@ on:
   push:
     tags:
     - 'v*'
-  schedule:
-    - cron: '30 16 * * *' # UTC+8小时=北京时间 17代表凌晨一点
+#   schedule:
+#     - cron: '30 16 * * *' # UTC+8小时=北京时间 17代表凌晨一点
   watch:
     types: [started]
    
